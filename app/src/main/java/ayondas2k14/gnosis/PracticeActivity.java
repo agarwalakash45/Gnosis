@@ -1,8 +1,11 @@
 package ayondas2k14.gnosis;
 
+import android.content.Intent;
 import android.graphics.drawable.RippleDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -32,6 +35,14 @@ public class PracticeActivity extends AppCompatActivity {
         CustomCategoryAdapter adapter=new CustomCategoryAdapter(this,myList);
 
         categoryLv.setAdapter(adapter);
+
+        categoryLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(PracticeActivity.this,PracticeQuestionActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     //Method to set category data
