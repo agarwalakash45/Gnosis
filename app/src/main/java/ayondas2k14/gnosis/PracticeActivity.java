@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ public class PracticeActivity extends AppCompatActivity {
         //Setting category data
         setCategoryData();
 
-        ListView categoryLv=(ListView)findViewById(R.id.categoryListView);
+        final ListView categoryLv=(ListView)findViewById(R.id.categoryListView);
 
         CustomCategoryAdapter adapter=new CustomCategoryAdapter(this,myList);
 
@@ -40,6 +41,10 @@ public class PracticeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent(PracticeActivity.this,PracticeQuestionActivity.class);
+
+                String category=((TextView)view.findViewById(R.id.categoryTitleTextView)).getText().toString();
+                //sending category name through Extras
+                intent.putExtra("Category",category);
                 startActivity(intent);
             }
         });

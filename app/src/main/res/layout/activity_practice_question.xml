@@ -39,28 +39,35 @@
             android:layout_height="wrap_content"
             android:text="Option A"
             android:id="@+id/option1Button"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="onOption1Clicked" />
 
         <Button
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="Option B"
             android:id="@+id/option2Button"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="onOption2Clicked"
+            android:layout_marginTop="5dp" />
 
         <Button
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="Option C"
             android:id="@+id/option3Button"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="onOption3Clicked"
+            android:layout_marginTop="5dp" />
 
         <Button
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="Option D"
             android:id="@+id/option4Button"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="onOption4Clicked"
+            android:layout_marginTop="5dp" />
 
     </LinearLayout>
 
@@ -83,7 +90,8 @@
         android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:background="@drawable/home" />
+        android:background="@drawable/home"
+        android:onClick="onHomeButtonClicked" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

@@ -56,9 +56,10 @@ public class QueDBAdapter {
         mDbHandler.close();
     }
 
-    public Cursor getTestData()
+    public Cursor getQueByCategory(String category)
     {
-        String sql ="SELECT * FROM questions";
+        String sql ="SELECT * FROM "  + QuesDBHandler.TABLE_QUES + " WHERE " +
+                QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\";";
 
         Cursor mCur = mDb.rawQuery(sql, null);
 

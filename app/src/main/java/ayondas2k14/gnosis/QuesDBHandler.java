@@ -16,18 +16,19 @@ import java.sql.SQLException;
 
 //Class to create,open and close an existing database in assets to the device databases directory
 public class QuesDBHandler extends SQLiteOpenHelper{
-    private static int DATABASE_VERSION=1;
+    private static int DATABASE_VERSION=4;
     private static String DB_NAME="questions.db";
-    private static String TABLE_QUES="questions";
+    public static String TABLE_QUES="questions";
     private static String DB_PATH="/data/data/ayondas2k14.gnosis/databases/";
     public static String COLUMN_CATEGORY="category";
     public static String COLUMN_QUES="question";
+    public static String COLUMN_QNO="qno";          //To keep track of question no.
     public static String COLUMN_OPTION1="option1";
     public static String COLUMN_OPTION2="option2";
     public static String COLUMN_OPTION3="option3";
     public static String COLUMN_OPTION4="option4";
     public static String COLUMN_ANSWER="answer";
-    public static String COLUMN_CHECK="done";
+    public static String COLUMN_CHECK="marked";         //To store user response, intially it si set equal to -1
 
     private SQLiteDatabase mDataBase;
     private final Context mContext;
@@ -71,6 +72,8 @@ public class QuesDBHandler extends SQLiteOpenHelper{
     private boolean checkDataBase()
     {
         File dbFile = new File(DB_PATH + DB_NAME);
+        //if(dbFile.exists())
+          //  dbFile.delete();
         //Log.v("dbFile", dbFile + "   "+ dbFile.exists());
         return dbFile.exists();
     }
