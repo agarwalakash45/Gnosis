@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class PracticeQuestionActivity extends AppCompatActivity {
 
-    TextView typeTv,quesTv;
+    TextView typeTv,quesTv,qnum;
     Button [] optButton;
     QueDBAdapter db;
     Cursor cursor;
@@ -34,7 +34,7 @@ public class PracticeQuestionActivity extends AppCompatActivity {
         optButton[1]=(Button)findViewById(R.id.option2Button);
         optButton[2]=(Button)findViewById(R.id.option3Button);
         optButton[3]=(Button)findViewById(R.id.option4Button);
-
+        qnum=(TextView)findViewById(R.id.qnoTv);
         setViewsFromDB();
         last= db.totalQuesNumber(category);
     }
@@ -76,11 +76,12 @@ public class PracticeQuestionActivity extends AppCompatActivity {
         optString[2]=cursor.getString(cursor.getColumnIndex(QuesDBHandler.COLUMN_OPTION3));
         optString[3]=cursor.getString(cursor.getColumnIndex(QuesDBHandler.COLUMN_OPTION4));
 
-
+        String abc=String.valueOf(quesno);
         typeTv.setText(type);
         quesTv.setText(que);
+        qnum.setText(abc);
         for(int i=0;i<4;i++)
-                optButton[i].setText(optString[i]);
+            optButton[i].setText(optString[i]);
 
         if(mark!=-1){
             //If answer and makr are not same, then user response is wrong
@@ -92,7 +93,7 @@ public class PracticeQuestionActivity extends AppCompatActivity {
                 optButton[answer].setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
 
             for(int i=0;i<4;i++)        //Disabling all buttons
-                    optButton[i].setClickable(false);
+                optButton[i].setClickable(false);
         }
     }
 
@@ -305,4 +306,14 @@ public class PracticeQuestionActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    public void onBackPressed () {
+        Intent intent = new Intent(getApplicationContext(),PracticeActivity.class);
+        //intent.addCategory(Intent.CATEGORY_HOME);
+        // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+
+
 }

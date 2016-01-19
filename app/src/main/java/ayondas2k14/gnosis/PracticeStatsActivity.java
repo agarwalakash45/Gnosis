@@ -115,7 +115,7 @@ public class PracticeStatsActivity extends AppCompatActivity {
         yvalues.add(pieNotAttempted);
         yvalues.add(pieCorrect);
 
-        PieDataSet DataSet=new PieDataSet(yvalues,"Statistics");
+        PieDataSet DataSet=new PieDataSet(yvalues,null);
 
         ArrayList<Integer> colors=new ArrayList<Integer>();
         colors.add(ColorTemplate.rgb("#ff5050"));
