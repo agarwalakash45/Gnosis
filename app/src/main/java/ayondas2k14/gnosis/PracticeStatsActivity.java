@@ -13,6 +13,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.w3c.dom.Text;
 
@@ -104,25 +105,40 @@ public class PracticeStatsActivity extends AppCompatActivity {
 
         //To add a pie chart in this activity
         PieChart chart=(PieChart)findViewById(R.id.pieChart);
+
         ArrayList<Entry> yvalues=new ArrayList<Entry>();
-        Entry pieTotal=new Entry(total,0);
-        Entry pieAttempted=new Entry(attempted,1);
+        Entry pieIncorrect=new Entry(attempted-correct,0);
+        Entry pieNotAttempted=new Entry(total-attempted,1);
         Entry pieCorrect=new Entry(correct,2);
 
-        yvalues.add(pieTotal);
-        yvalues.add(pieAttempted);
+        yvalues.add(pieIncorrect);
+        yvalues.add(pieNotAttempted);
         yvalues.add(pieCorrect);
 
         PieDataSet DataSet=new PieDataSet(yvalues,"Statistics");
 
-        String [] xvalues={"Total Questions","Attempted","Correct"};
+        ArrayList<Integer> colors=new ArrayList<Integer>();
+        colors.add(ColorTemplate.rgb("#ff5050"));
+        colors.add(ColorTemplate.rgb("#12a7d1"));
+        colors.add(ColorTemplate.rgb("#b3d334"));
+
+        DataSet.setColors(colors);
+
+        String [] xvalues={"Incorrect","Not Attempted","Correct"};
 
         PieData data=new PieData(xvalues,DataSet);
 
+        data.setValueTextSize(15f);
+
         chart.setData(data);
+//        chart.setHoleColorTransparent(true);
+  //      chart.setHoleRadius(7);
+
+        chart.setUsePercentValues(true);
+
+        chart.setDescription(null);
 
         chart.invalidate();
-
     }
 
     //Method to set onClick for HOME button
