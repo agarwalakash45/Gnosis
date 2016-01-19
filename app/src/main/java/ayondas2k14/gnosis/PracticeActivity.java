@@ -59,11 +59,16 @@ public class PracticeActivity extends AppCompatActivity {
                 //sending category name and ques no through Extras
                 Cursor cursor= db.getFirstUnmarkedQuesByCategory(category);
 
-                int qno=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_QNO));
+                int qno;
 
-                intent.putExtra("Category",category);
+                if(cursor.getCount()==0)        //If all questions are marked, then go to the first question
+                    qno=1;
+                else
+                    qno = cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_QNO));   //else go to the first unmarked question
 
-                intent.putExtra("Qno",qno);
+                intent.putExtra("Category", category);
+
+                intent.putExtra("Qno", qno);
 
                 startActivity(intent);
             }

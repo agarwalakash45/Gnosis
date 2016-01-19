@@ -95,4 +95,28 @@ public class QueDBAdapter {
         cursor.moveToFirst();
         return cursor;
     }
+
+    //Method to return cursor to last question in a category
+    public int totalQuesNumber(String category){
+        String query="SELECT * FROM " + QuesDBHandler.TABLE_QUES + " WHERE " +
+                QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\";";
+
+        Cursor c=db.rawQuery(query,null);
+
+        c.moveToLast();
+
+        int last=c.getInt(c.getColumnIndex(QuesDBHandler.COLUMN_QNO));
+
+        c.close();
+
+        return last;
+    }
+
+    //Method to return cursor to query returning all the entries for a category
+    public Cursor getAllFromCategory(String category){
+        String query="SELECT * FROM " + QuesDBHandler.TABLE_QUES + " WHERE " +
+                QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\";";
+
+        return db.rawQuery(query,null);
+    }
 }

@@ -19,6 +19,8 @@ public class PracticeQuestionActivity extends AppCompatActivity {
     Cursor cursor;
     String category;
     int quesno,qnext;
+    int last;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class PracticeQuestionActivity extends AppCompatActivity {
         optButton[3]=(Button)findViewById(R.id.option4Button);
 
         setViewsFromDB();
+        last= db.totalQuesNumber(category);
     }
 
     //Method to set textviews and buttons using data from database
@@ -94,9 +97,9 @@ public class PracticeQuestionActivity extends AppCompatActivity {
     }
 
     //Methods to set onclick listeners for option buttons
-    public void onOption1Clicked(View view){
-        int answer=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_ANSWER));
-        if(answer==0)
+    public void onOption1Clicked(View view) {
+        int answer = cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_ANSWER));
+        if (answer == 0)
             optButton[0].setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
         else {
             optButton[0].setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
@@ -104,26 +107,32 @@ public class PracticeQuestionActivity extends AppCompatActivity {
         }
 
         //Updating user response in the database for this question
-        db.updateQueStatus(category,quesno,0);
+        db.updateQueStatus(category, quesno, 0);
 
         //disabling button clicks when an option is seletcted
-        for(int i=0;i<4;i++)
+        for (int i = 0; i < 4; i++)
             optButton[i].setClickable(false);
 
-        //Creating a thread to wait on the activity for 2 seconds and then move to the next question
         Thread timer=new Thread(){
-            public void run(){
-                try{
+            public void run() {
+                try {
                     sleep(1500);
-                }catch(InterruptedException  e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
-                }finally{
-                    Intent intent=new Intent(getApplicationContext(),PracticeQuestionActivity.class);
-                    intent.putExtra("Category",category);
-                    intent.putExtra("Qno",quesno+1);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);        }
-
+                } finally {
+                    //If this is the last question, go to the stats activity
+                    if (quesno == last) {
+                        Intent intent = new Intent(PracticeQuestionActivity.this, PracticeStatsActivity.class);
+                        intent.putExtra("Category", category);
+                        startActivity(intent);
+                    } else {        //move to the next question
+                        Intent intent = new Intent(PracticeQuestionActivity.this, PracticeQuestionActivity.class);
+                        intent.putExtra("Category", category);
+                        intent.putExtra("Qno", quesno + 1);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                    }
+                }
             }
         };
         timer.start();
@@ -146,24 +155,30 @@ public class PracticeQuestionActivity extends AppCompatActivity {
         for(int i=0;i<4;i++)
             optButton[i].setClickable(false);
 
-        //Creating a thread to wait on the activity for 2 seconds and then move to the next question
-        Thread timer=new Thread(){
-            public void run(){
-                try{
-                    sleep(1500);
-                }catch(InterruptedException  e){
-                    e.printStackTrace();
-                }finally{
-                    Intent intent=new Intent(getApplicationContext(),PracticeQuestionActivity.class);
-                    intent.putExtra("Category",category);
-                    intent.putExtra("Qno",quesno+1);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);        }
 
+        Thread timer=new Thread(){
+            public void run() {
+                try {
+                    sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    //If this is the last question, go to the stats activity
+                    if (quesno == last) {
+                        Intent intent = new Intent(PracticeQuestionActivity.this, PracticeStatsActivity.class);
+                        intent.putExtra("Category", category);
+                        startActivity(intent);
+                    } else {        //move to the next question
+                        Intent intent = new Intent(PracticeQuestionActivity.this, PracticeQuestionActivity.class);
+                        intent.putExtra("Category", category);
+                        intent.putExtra("Qno", quesno + 1);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                    }
+                }
             }
         };
         timer.start();
-
 
     }
     public void onOption3Clicked(View view){
@@ -182,26 +197,34 @@ public class PracticeQuestionActivity extends AppCompatActivity {
         for(int i=0;i<4;i++)
             optButton[i].setClickable(false);
 
-        //Creating a thread to wait on the activity for 2 seconds and then move to the next question
+
         Thread timer=new Thread(){
-            public void run(){
-                try{
+            public void run() {
+                try {
                     sleep(1500);
-                }catch(InterruptedException  e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
-                }finally{
-                    Intent intent=new Intent(getApplicationContext(),PracticeQuestionActivity.class);
-                    intent.putExtra("Category",category);
-                    intent.putExtra("Qno",quesno+1);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);        }
+                } finally {
+                    //If this is the last question, go to the stats activity
+                    if (quesno == last) {
+                        Intent intent = new Intent(PracticeQuestionActivity.this, PracticeStatsActivity.class);
+                        intent.putExtra("Category", category);
+                        startActivity(intent);
+                    } else {        //move to the next question
+                        Intent intent = new Intent(PracticeQuestionActivity.this, PracticeQuestionActivity.class);
+                        intent.putExtra("Category", category);
+                        intent.putExtra("Qno", quesno + 1);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                    }
                 }
+            }
         };
         timer.start();
 
-
-
     }
+
+
     public void onOption4Clicked(View view){
         int answer=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_ANSWER));
         if(answer==3)
@@ -219,19 +242,26 @@ public class PracticeQuestionActivity extends AppCompatActivity {
             optButton[i].setClickable(false);
 
 
-        //Creating a thread to wait on the activity for 2 seconds and then move to the next question
         Thread timer=new Thread(){
-            public void run(){
-                try{
+            public void run() {
+                try {
                     sleep(1500);
-                }catch(InterruptedException  e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
-                }finally{
-                    Intent intent=new Intent(getApplicationContext(),PracticeQuestionActivity.class);
-                    intent.putExtra("Category",category);
-                    intent.putExtra("Qno",quesno+1);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);        }
+                } finally {
+                    //If this is the last question, go to the stats activity
+                    if (quesno == last) {
+                        Intent intent = new Intent(PracticeQuestionActivity.this, PracticeStatsActivity.class);
+                        intent.putExtra("Category", category);
+                        startActivity(intent);
+                    } else {        //move to the next question
+                        Intent intent = new Intent(PracticeQuestionActivity.this, PracticeQuestionActivity.class);
+                        intent.putExtra("Category", category);
+                        intent.putExtra("Qno", quesno + 1);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
+                    }
+                }
             }
         };
         timer.start();
@@ -240,36 +270,39 @@ public class PracticeQuestionActivity extends AppCompatActivity {
 
     //Method to set click listener for HOME Button
     public void onHomeButtonClicked(View view){
-        Intent intent=new Intent(this,PracticeActivity.class);
+        Intent intent=new Intent(getApplicationContext(),PracticeActivity.class);
         startActivity(intent);
     }
 
     //Method to set click listener for next button
-    public void onNextButtonClicked(View view){
-        Intent intent=new Intent(this,PracticeQuestionActivity.class);
-        intent.putExtra("Category",category);
-        intent.putExtra("Qno",quesno+1);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
+    public void onNextButtonClicked(View view) {
+        //If this is the last question, go to the stats activity
+        if (quesno == last) {
+            Intent intent = new Intent(PracticeQuestionActivity.this, PracticeStatsActivity.class);
+            intent.putExtra("Category", category);
+            startActivity(intent);
+        } else {        //move to the next question
+            Intent intent = new Intent(PracticeQuestionActivity.this, PracticeQuestionActivity.class);
+            intent.putExtra("Category", category);
+            intent.putExtra("Qno", quesno + 1);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+        }
     }
-
 
     //Method to set click listener for back button
     public void onBackButtonClicked(View view){
-        Intent intent=new Intent(this,PracticeQuestionActivity.class);
-        intent.putExtra("Category",category);
-        intent.putExtra("Qno",quesno-1);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
+
+        if(quesno==1){      //If this is the first question, return to the category activity
+            Intent intent=new Intent(this,PracticeActivity.class);
+            startActivity(intent);
+        }
+        else {              //Move to the previous activity
+            Intent intent = new Intent(getApplicationContext(), PracticeQuestionActivity.class);
+            intent.putExtra("Category", category);
+            intent.putExtra("Qno", quesno - 1);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+        }
     }
-
-
-    //Overriding onBackPressed() method to return PracticeActivity when back is pressed
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent=new Intent(getApplicationContext(),PracticeActivity.class);
-        startActivity(intent);
-
-   }
 }
