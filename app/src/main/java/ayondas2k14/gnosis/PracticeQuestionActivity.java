@@ -17,6 +17,8 @@ public class PracticeQuestionActivity extends AppCompatActivity {
     Button [] optButton;
     QueDBAdapter db;
     Cursor cursor;
+    String category;
+    int quesno,qnext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +40,7 @@ public class PracticeQuestionActivity extends AppCompatActivity {
     public void setViewsFromDB(){
 
         db=new QueDBAdapter(this);
-        //create database
-        try {
-            db.createDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
         //open the database
         try {
             db.open();
@@ -53,10 +50,18 @@ public class PracticeQuestionActivity extends AppCompatActivity {
 
         //Retrieving category name from extras
         Bundle bundle=getIntent().getExtras();
-        String category=bundle.getString("Category");
+        category=bundle.getString("Category");
+        qnext=bundle.getInt("Qno");
 
         //Cursor to query returning an entry from the database
-        cursor=db.getQueByCategory(category);
+        cursor=db.getQueByCategory(category,qnext);
+
+        quesno=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_QNO));
+
+        //retrieving status of question
+        int mark=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_MARK));
+        //retrieving answer of question
+        int answer=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_ANSWER));
 
         //setting textviews and buttons text
         String type,que;
@@ -68,10 +73,24 @@ public class PracticeQuestionActivity extends AppCompatActivity {
         optString[2]=cursor.getString(cursor.getColumnIndex(QuesDBHandler.COLUMN_OPTION3));
         optString[3]=cursor.getString(cursor.getColumnIndex(QuesDBHandler.COLUMN_OPTION4));
 
+
         typeTv.setText(type);
         quesTv.setText(que);
         for(int i=0;i<4;i++)
                 optButton[i].setText(optString[i]);
+
+        if(mark!=-1){
+            //If answer and makr are not same, then user response is wrong
+            if(mark!=answer){
+                optButton[mark].setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
+                optButton[answer].setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+            }
+            else        //If answer and mark are same, user answer is correct and already marked
+                optButton[answer].setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+
+            for(int i=0;i<4;i++)        //Disabling all buttons
+                    optButton[i].setClickable(false);
+        }
     }
 
     //Methods to set onclick listeners for option buttons
@@ -83,6 +102,32 @@ public class PracticeQuestionActivity extends AppCompatActivity {
             optButton[0].setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
             optButton[answer].setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
         }
+
+        //Updating user response in the database for this question
+        db.updateQueStatus(category,quesno,0);
+
+        //disabling button clicks when an option is seletcted
+        for(int i=0;i<4;i++)
+            optButton[i].setClickable(false);
+
+        //Creating a thread to wait on the activity for 2 seconds and then move to the next question
+        Thread timer=new Thread(){
+            public void run(){
+                try{
+                    sleep(1500);
+                }catch(InterruptedException  e){
+                    e.printStackTrace();
+                }finally{
+                    Intent intent=new Intent(getApplicationContext(),PracticeQuestionActivity.class);
+                    intent.putExtra("Category",category);
+                    intent.putExtra("Qno",quesno+1);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);        }
+
+            }
+        };
+        timer.start();
+
     }
 
     public void onOption2Clicked(View view){
@@ -93,6 +138,33 @@ public class PracticeQuestionActivity extends AppCompatActivity {
             optButton[1].setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
             optButton[answer].setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
         }
+
+        //Updating user response in the database for this question
+        db.updateQueStatus(category, quesno, 1);
+
+        //disabling button clicks when an option is seletcted
+        for(int i=0;i<4;i++)
+            optButton[i].setClickable(false);
+
+        //Creating a thread to wait on the activity for 2 seconds and then move to the next question
+        Thread timer=new Thread(){
+            public void run(){
+                try{
+                    sleep(1500);
+                }catch(InterruptedException  e){
+                    e.printStackTrace();
+                }finally{
+                    Intent intent=new Intent(getApplicationContext(),PracticeQuestionActivity.class);
+                    intent.putExtra("Category",category);
+                    intent.putExtra("Qno",quesno+1);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);        }
+
+            }
+        };
+        timer.start();
+
+
     }
     public void onOption3Clicked(View view){
         int answer=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_ANSWER));
@@ -102,6 +174,33 @@ public class PracticeQuestionActivity extends AppCompatActivity {
             optButton[2].setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
             optButton[answer].setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
         }
+
+        //Updating user response in the database for this question
+        db.updateQueStatus(category,quesno,2);
+
+        //disabling button clicks when an option is seletcted
+        for(int i=0;i<4;i++)
+            optButton[i].setClickable(false);
+
+        //Creating a thread to wait on the activity for 2 seconds and then move to the next question
+        Thread timer=new Thread(){
+            public void run(){
+                try{
+                    sleep(1500);
+                }catch(InterruptedException  e){
+                    e.printStackTrace();
+                }finally{
+                    Intent intent=new Intent(getApplicationContext(),PracticeQuestionActivity.class);
+                    intent.putExtra("Category",category);
+                    intent.putExtra("Qno",quesno+1);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);        }
+                }
+        };
+        timer.start();
+
+
+
     }
     public void onOption4Clicked(View view){
         int answer=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_ANSWER));
@@ -111,6 +210,31 @@ public class PracticeQuestionActivity extends AppCompatActivity {
             optButton[3].setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
             optButton[answer].setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
         }
+
+        //Updating user response in the database for this question
+        db.updateQueStatus(category, quesno, 1);
+
+        //disabling button clicks when an option is seletcted
+        for(int i=0;i<4;i++)
+            optButton[i].setClickable(false);
+
+
+        //Creating a thread to wait on the activity for 2 seconds and then move to the next question
+        Thread timer=new Thread(){
+            public void run(){
+                try{
+                    sleep(1500);
+                }catch(InterruptedException  e){
+                    e.printStackTrace();
+                }finally{
+                    Intent intent=new Intent(getApplicationContext(),PracticeQuestionActivity.class);
+                    intent.putExtra("Category",category);
+                    intent.putExtra("Qno",quesno+1);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);        }
+            }
+        };
+        timer.start();
     }
 
 
@@ -120,12 +244,32 @@ public class PracticeQuestionActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //Overriding onBackPressed() method to return PracticeActivity when back is pressed
+    //Method to set click listener for next button
+    public void onNextButtonClicked(View view){
+        Intent intent=new Intent(this,PracticeQuestionActivity.class);
+        intent.putExtra("Category",category);
+        intent.putExtra("Qno",quesno+1);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+    }
 
+
+    //Method to set click listener for back button
+    public void onBackButtonClicked(View view){
+        Intent intent=new Intent(this,PracticeQuestionActivity.class);
+        intent.putExtra("Category",category);
+        intent.putExtra("Qno",quesno-1);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+    }
+
+
+    //Overriding onBackPressed() method to return PracticeActivity when back is pressed
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent=new Intent(this,PracticeActivity.class);
+        Intent intent=new Intent(getApplicationContext(),PracticeActivity.class);
         startActivity(intent);
-    }
+
+   }
 }

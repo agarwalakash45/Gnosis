@@ -80,7 +80,8 @@
         android:layout_alignBottom="@+id/homeButton"
         android:layout_toLeftOf="@+id/homeButton"
         android:layout_toStartOf="@+id/homeButton"
-        android:layout_marginRight="40dp" />
+        android:layout_marginRight="40dp"
+        android:onClick="onBackButtonClicked" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -102,6 +103,7 @@
         android:layout_alignBottom="@+id/homeButton"
         android:layout_toRightOf="@+id/homeButton"
         android:layout_toEndOf="@+id/homeButton"
-        android:layout_marginLeft="40dp" />
+        android:layout_marginLeft="40dp"
+        android:onClick="onNextButtonClicked" />
 
 </RelativeLayout>

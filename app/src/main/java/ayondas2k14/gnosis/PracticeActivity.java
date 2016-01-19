@@ -1,6 +1,7 @@
 package ayondas2k14.gnosis;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.RippleDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PracticeActivity extends AppCompatActivity {
@@ -19,6 +21,8 @@ public class PracticeActivity extends AppCompatActivity {
 
     String [] desc={"A","B","C","C","C","C","C","C","C"};
 
+    QueDBAdapter db;
+
     int [] imgId={R.drawable.business,R.drawable.music,R.drawable.movies,R.drawable.literature,R.drawable.general, R.drawable.sports,
             R.drawable.india,R.drawable.science,R.drawable.comp_sc};
 
@@ -27,6 +31,14 @@ public class PracticeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_practice);
+        db=new QueDBAdapter(this);
+        try {
+            db.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
 
         //Setting category data
         setCategoryData();
@@ -40,11 +52,19 @@ public class PracticeActivity extends AppCompatActivity {
         categoryLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent intent=new Intent(PracticeActivity.this,PracticeQuestionActivity.class);
 
                 String category=((TextView)view.findViewById(R.id.categoryTitleTextView)).getText().toString();
-                //sending category name through Extras
+                //sending category name and ques no through Extras
+                Cursor cursor= db.getFirstUnmarkedQuesByCategory(category);
+
+                int qno=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_QNO));
+
                 intent.putExtra("Category",category);
+
+                intent.putExtra("Qno",qno);
+
                 startActivity(intent);
             }
         });

@@ -51,6 +51,7 @@ public class CustomCategoryAdapter extends BaseAdapter{
         else                //If convertView is already initialised then retrieve the instance of holder from tag of convertview
             holder=(MyViewHolder)convertView.getTag();
         CategoryData item= getItem(position);
+
         holder.titleTV.setText(item.getTitle());
         holder.descTV.setText(item.getDescription());
         holder.imgView.setImageResource(item.getImgResId());

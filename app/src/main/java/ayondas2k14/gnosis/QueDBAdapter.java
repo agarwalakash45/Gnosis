@@ -11,7 +11,7 @@ import java.sql.SQLException;
 //Adapter class to use existing DATABASE in the /data/data/packagename/dbname
 public class QueDBAdapter {
     private final Context mContext;
-    private SQLiteDatabase mDb;
+    private SQLiteDatabase db;
     private QuesDBHandler mDbHandler;
 
     //Constructor
@@ -19,6 +19,11 @@ public class QueDBAdapter {
     {
         this.mContext = context;
         mDbHandler = new QuesDBHandler(mContext);
+        try {
+            createDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public QueDBAdapter createDatabase() throws SQLException
@@ -41,7 +46,7 @@ public class QueDBAdapter {
         {
             mDbHandler.openDataBase();
             mDbHandler.close();
-            mDb = mDbHandler.getReadableDatabase();
+            db = mDbHandler.getWritableDatabase();
         }
         catch (SQLException mSQLException)
         {
@@ -56,17 +61,38 @@ public class QueDBAdapter {
         mDbHandler.close();
     }
 
-    public Cursor getQueByCategory(String category)
+    public Cursor getQueByCategory(String category,int quesno)
     {
         String sql ="SELECT * FROM "  + QuesDBHandler.TABLE_QUES + " WHERE " +
-                QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\";";
+                QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\" AND " +
+                QuesDBHandler.COLUMN_QNO + "=" + quesno + ";";
 
-        Cursor mCur = mDb.rawQuery(sql, null);
+        Cursor mCur = db.rawQuery(sql, null);
 
         mCur.moveToFirst();
         if(mCur.getCount()>0)
             Log.d("Akash","Entries exists!!");
 
         return mCur;
+    }
+
+    //Method to update user response in the marked field
+    public void updateQueStatus(String category,int queno,int response){
+        String query="UPDATE " + QuesDBHandler.TABLE_QUES + " SET " +
+                QuesDBHandler.COLUMN_MARK + "=" + response + " WHERE " +
+                QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\" AND " +
+                QuesDBHandler.COLUMN_QNO + "=" + queno + ";";
+
+                 db.execSQL(query);
+    }
+    //Method to return cursor to the next unmarked question for a particular category
+    public Cursor getFirstUnmarkedQuesByCategory(String category){
+
+        String query= "SELECT * FROM " + QuesDBHandler.TABLE_QUES + " WHERE "+
+                QuesDBHandler.COLUMN_CATEGORY + " = "+ "\""+category+"\" AND " +
+                QuesDBHandler.COLUMN_MARK + "=-1; ";
+        Cursor cursor=db.rawQuery(query,null);
+        cursor.moveToFirst();
+        return cursor;
     }
 }
