@@ -8,14 +8,45 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ayondas2k14.gnosis.MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:id="@+id/profileImage"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/user_default"
+            android:onClick="onImageClicked"
+            android:clickable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Name"
+            android:id="@+id/userNameTV"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/profileImage"
+            android:layout_toEndOf="@+id/profileImage"
+            android:textSize="25dp"
+            android:layout_marginLeft="5dp"
+            android:onClick="onUserNameClicked"
+            android:clickable="true" />
+    </RelativeLayout>
 
     <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/card_view1"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="130dp"
             card_view:cardCornerRadius="4dp"
         android:onClick="onPracticeModeClicked"
         android:layout_marginTop="30dp">
@@ -49,7 +80,7 @@
         android:id="@+id/card_view2"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="130dp"
         card_view:cardCornerRadius="4dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="30dp">

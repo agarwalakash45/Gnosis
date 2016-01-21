@@ -9,6 +9,9 @@ import android.graphics.drawable.RippleDrawable;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -28,6 +31,8 @@ public class PracticeActivity extends AppCompatActivity {
     String[] desc = {"A", "B", "C", "C", "C", "C", "C", "C", "C"};
 
     QueDBAdapter db;
+
+    String category;
 
     int[] imgId = {R.drawable.business, R.drawable.music, R.drawable.movies, R.drawable.literature, R.drawable.general, R.drawable.sports,
             R.drawable.india, R.drawable.science, R.drawable.comp_sc};
@@ -64,7 +69,7 @@ public class PracticeActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(PracticeActivity.this, PracticeQuestionActivity.class);
 
-                String category = ((TextView) view.findViewById(R.id.categoryTitleTextView)).getText().toString();
+                category = ((TextView) view.findViewById(R.id.categoryTitleTextView)).getText().toString();
                 //sending category name and ques no through Extras
                 Cursor cursor = db.getFirstUnmarkedQuesByCategory(category);
 
@@ -82,8 +87,8 @@ public class PracticeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
+        registerForContextMenu(categoryLv);
     }
 
     //Method to set category data
@@ -100,6 +105,58 @@ public class PracticeActivity extends AppCompatActivity {
 
     }
 
+    //Method to create context menu to give options to show stats and give refresh options
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.context_category_menu,menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info=(AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+
+        final String categoryName=((TextView)info.targetView.findViewById(R.id.categoryTitleTextView)).getText().toString();
+
+
+        switch(item.getItemId()){
+            case R.id.stats_context_menu:
+                //Starting the stats activity for this category
+                Intent intent=new Intent(this,PracticeStatsActivity.class);
+
+                intent.putExtra("Category",categoryName);
+                startActivity(intent);
+
+                break;
+            case R.id.refresh_context_menu:
+
+                AlertDialog.Builder alert=new AlertDialog.Builder(this);
+                alert.setMessage("All progress will be refreshed\nAre you sure?");
+
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.refreshResponsesForCategory(categoryName);
+                        Toast.makeText(getApplicationContext(), "Data Refreshed!!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                alert.show();
+
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed () {
         Intent intent=new Intent(this,MainActivity.class);
         startActivity(intent);

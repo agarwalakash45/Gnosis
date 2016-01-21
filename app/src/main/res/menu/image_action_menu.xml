@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Take Photo"
+        android:id="@+id/take_photo"
+        />
+    <item
+        android:title="Pick from Gallery"
+        android:id="@+id/pick_from_gallery"
+        />
+    <item
+        android:title="Remove"
+        android:id="@+id/remove_image"
+        />
+</menu>

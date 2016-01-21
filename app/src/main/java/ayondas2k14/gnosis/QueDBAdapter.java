@@ -119,4 +119,13 @@ public class QueDBAdapter {
 
         return db.rawQuery(query,null);
     }
+
+    //Method to refresh all responses for a category
+    public void refreshResponsesForCategory(String category){
+        String query="UPDATE " + QuesDBHandler.TABLE_QUES + " SET " +
+                QuesDBHandler.COLUMN_MARK + "=-1 WHERE " +
+                QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\";";
+
+        db.execSQL(query);
+    }
 }
