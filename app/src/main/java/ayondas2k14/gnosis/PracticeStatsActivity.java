@@ -72,7 +72,7 @@ public class PracticeStatsActivity extends AppCompatActivity {
         while(!cursor.isAfterLast()){
             int ans,mark;
             ans=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_ANSWER));
-            mark=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_MARK));
+            mark=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_MARKPRAC));
 
             Log.d("Debug",""+cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_QNO))+" "+ mark+ " "+ans);
 

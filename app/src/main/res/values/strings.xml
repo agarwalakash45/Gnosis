@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Gnosis</string>
+    <string name="title_activity_challenge">ChallengeActivity</string>
 </resources>

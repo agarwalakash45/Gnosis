@@ -62,7 +62,7 @@ public class PracticeQuestionActivity extends AppCompatActivity {
         quesno=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_QNO));
 
         //retrieving status of question
-        int mark=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_MARK));
+        int mark=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_MARKPRAC));
         //retrieving answer of question
         int answer=cursor.getInt(cursor.getColumnIndex(QuesDBHandler.COLUMN_ANSWER));
 

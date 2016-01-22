@@ -28,7 +28,9 @@ public class QuesDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_OPTION3="option3";
     public static String COLUMN_OPTION4="option4";
     public static String COLUMN_ANSWER="answer";
-    public static String COLUMN_MARK="marked";         //To store user response, intially it si set equal to -1
+    public static String COLUMN_MARKPRAC="markp";         //To store user response in practice, intially it si set equal to -1
+    public static String COLUMN_MARKCHL="markc";          //To store user response in challenge mode
+    public static String COLUMN_LEVEL="level";      //level of que. in challenge mode
 
     private SQLiteDatabase mDataBase;
     private final Context mContext;
@@ -72,8 +74,8 @@ public class QuesDBHandler extends SQLiteOpenHelper{
     private boolean checkDataBase()
     {
         File dbFile = new File(DB_PATH + DB_NAME);
-        //if(dbFile.exists())
-          //  dbFile.delete();
+        if(dbFile.exists())
+            dbFile.delete();
         //Log.v("dbFile", dbFile + "   "+ dbFile.exists());
         return dbFile.exists();
     }

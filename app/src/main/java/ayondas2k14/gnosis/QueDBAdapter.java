@@ -79,7 +79,7 @@ public class QueDBAdapter {
     //Method to update user response in the marked field
     public void updateQueStatus(String category,int queno,int response){
         String query="UPDATE " + QuesDBHandler.TABLE_QUES + " SET " +
-                QuesDBHandler.COLUMN_MARK + "=" + response + " WHERE " +
+                QuesDBHandler.COLUMN_MARKPRAC + "=" + response + " WHERE " +
                 QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\" AND " +
                 QuesDBHandler.COLUMN_QNO + "=" + queno + ";";
 
@@ -90,7 +90,7 @@ public class QueDBAdapter {
 
         String query= "SELECT * FROM " + QuesDBHandler.TABLE_QUES + " WHERE "+
                 QuesDBHandler.COLUMN_CATEGORY + " = "+ "\""+category+"\" AND " +
-                QuesDBHandler.COLUMN_MARK + "=-1; ";
+                QuesDBHandler.COLUMN_MARKPRAC + "=-1; ";
         Cursor cursor=db.rawQuery(query,null);
         cursor.moveToFirst();
         return cursor;
@@ -123,7 +123,7 @@ public class QueDBAdapter {
     //Method to refresh all responses for a category
     public void refreshResponsesForCategory(String category){
         String query="UPDATE " + QuesDBHandler.TABLE_QUES + " SET " +
-                QuesDBHandler.COLUMN_MARK + "=-1 WHERE " +
+                QuesDBHandler.COLUMN_MARKPRAC + "=-1 WHERE " +
                 QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\";";
 
         db.execSQL(query);

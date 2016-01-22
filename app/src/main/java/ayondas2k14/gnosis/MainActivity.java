@@ -3,13 +3,16 @@ package ayondas2k14.gnosis;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,26 +33,33 @@ public class MainActivity extends AppCompatActivity {
     private static int PICK_GALLERY_CODE=2;
     TextView nameTextView;
     ImageView profileImage;
-    UserDBHandler db;
+    SharedPreferences myPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db=new UserDBHandler(this,null,null,1);
+       //Initialising the SharedPreferences object
+        myPreference= PreferenceManager.getDefaultSharedPreferences(this);
 
         //Setting username text view and profile image image view
         nameTextView=(TextView)findViewById(R.id.userNameTV);
         profileImage=(ImageView)findViewById(R.id.profileImage);
 
-        //Getting byte array from database and converting to Bitmap Image
-        byte [] image=db.getImage();
+        //get String value mapped corresponding to our name key
+        String nameString=myPreference.getString("namePreference","NAME");
+        nameTextView.setText(nameString);
 
+        //get String value mapped corresponding to our image key
+        String imageString=myPreference.getString("imagePreference", "ayon");
+
+        //Convert String to image by decoding
+        Bitmap image=decodeBase64(imageString);
         if(image==null)
             profileImage.setImageDrawable(getResources().getDrawable(R.drawable.user_default));
         else
-            profileImage.setImageBitmap(BitmapFactory.decodeByteArray(image,0,image.length));
+            profileImage.setImageBitmap(image);
 
         //If device has no camera, disable the clickability of image view
         if(!hasCamera())
@@ -83,8 +93,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Name can not be empty!!",Toast.LENGTH_SHORT).show();
                 else {
                     nameTextView.setText(username);
-                    //Saving name to shared preferences
 
+                    //Save name to Sharedpreference
+                    SharedPreferences.Editor editor = myPreference.edit();
+                    editor.putString("namePreference", username);
+                    editor.commit();
                 }
             }
         });
@@ -119,11 +132,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.pick_from_gallery:        //Pick Image from gallery
 
-                        Intent intent2=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        Intent intent2 = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
                         intent2.setType("image/*");     //Only choose Images from Gallery
 
-                        startActivityForResult(intent2,PICK_GALLERY_CODE);
+                        startActivityForResult(intent2, PICK_GALLERY_CODE);
 
                         break;
                     case R.id.remove_image:             //Remove Image
@@ -154,10 +167,12 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle=data.getExtras();
             image=(Bitmap)bundle.get("data");
 
-            assert image != null;
-                image.compress(Bitmap.CompressFormat.PNG,0,stream);
-            db.saveImageBitmap(stream.toByteArray());
+            SharedPreferences.Editor editor = myPreference.edit();
 
+            editor.putString("imagePreference", encodeTobase64(image));
+            editor.commit();
+
+            //Set image
             profileImage.setImageBitmap(image);
 
         }
@@ -173,9 +188,11 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            assert image != null;
-                image.compress(Bitmap.CompressFormat.PNG,0,stream);
-            db.saveImageBitmap(stream.toByteArray());
+
+            SharedPreferences.Editor editor = myPreference.edit();
+
+            editor.putString("imagePreference", encodeTobase64(image));
+            editor.commit();
 
             profileImage.setImageBitmap(image);
         }
@@ -226,5 +243,26 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
 
     }
+    public static String encodeTobase64(Bitmap image) {
+        Bitmap immage = image;
+        Log.d("Debug", "1");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Log.d("Debug", "2");
+        immage.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        Log.d("Debug", "3");
+        byte[] b = baos.toByteArray();
+        Log.d("Debug", "4");
 
+        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+
+        Log.d("Debug", imageEncoded);
+        return imageEncoded;
+    }
+
+    // method for base64 to bitmap
+    public static Bitmap decodeBase64(String input) {
+        byte[] decodedByte = Base64.decode(input, 0);
+        return BitmapFactory
+                .decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
 }
