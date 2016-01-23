@@ -21,7 +21,8 @@
             android:textSize="40dp"
             android:layout_margin="5dp"
             android:textAlignment="center"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#080808" />
 
         <ImageView
             android:layout_width="wrap_content"

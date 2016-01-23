@@ -26,16 +26,16 @@ public class PracticeActivity extends AppCompatActivity {
 
     ArrayList<CategoryData> myList = new ArrayList<CategoryData>();
 
-    String[] title = {"Business", "Music", "Movies", "Literature", "General", "Sports", "India", "Science", "Computer Science"};
+    String[] title = {"Business", "Computer Science","General","India","Literature", "Movies","Music","Science","Sports"};
 
-    String[] desc = {"A", "B", "C", "C", "C", "C", "C", "C", "C"};
+    String[] desc = {"For the corporate geeks", "Hackers and Crackers", "Test your general knowledge", "Mera Bharat Mahaan", "For the avid readers", "Movie buffs,eh?", "'Music is my life',anyone?", "For the nerds out there", "For the sport fanatics"};
 
     QueDBAdapter db;
 
     String category;
 
-    int[] imgId = {R.drawable.business, R.drawable.music, R.drawable.movies, R.drawable.literature, R.drawable.general, R.drawable.sports,
-            R.drawable.india, R.drawable.science, R.drawable.comp_sc};
+    int[] imgId = {R.drawable.business, R.drawable.comp_sc, R.drawable.general, R.drawable.india, R.drawable.literature, R.drawable.movies,
+            R.drawable.music, R.drawable.science, R.drawable.sports};
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.

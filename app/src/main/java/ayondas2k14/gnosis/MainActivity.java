@@ -204,7 +204,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //Overriding onBackPressed() method so as to exit from app
+    public void onChallengeModeClicked(View view)
+    {
+        Intent intent=new Intent(this,ChallengeActivity.class);
+        startActivity(intent);
+
+    }
+
+
+    // Overriding onBackPressed() method so as to exit from app
     @Override
     public void onBackPressed () {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -245,18 +253,11 @@ public class MainActivity extends AppCompatActivity {
     }
     public static String encodeTobase64(Bitmap image) {
         Bitmap immage = image;
-        Log.d("Debug", "1");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Log.d("Debug", "2");
         immage.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        Log.d("Debug", "3");
-        byte[] b = baos.toByteArray();
-        Log.d("Debug", "4");
-
+       byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-        Log.d("Debug", imageEncoded);
-        return imageEncoded;
+       return imageEncoded;
     }
 
     // method for base64 to bitmap

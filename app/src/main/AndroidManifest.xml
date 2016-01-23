@@ -21,13 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PracticeActivity"></activity>
+        <activity android:name=".PracticeActivity" />
         <activity android:name=".PracticeQuestionActivity" />
         <activity android:name=".PracticeStatsActivity" />
+        <activity android:name=".ChallengeStatsActivity"
+
+            />
         <activity
             android:name=".ChallengeActivity"
             android:label="@string/title_activity_challenge"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ChallengeQuestionActivity"></activity>
     </application>
 
 </manifest>

@@ -74,8 +74,8 @@ public class QuesDBHandler extends SQLiteOpenHelper{
     private boolean checkDataBase()
     {
         File dbFile = new File(DB_PATH + DB_NAME);
-        if(dbFile.exists())
-            dbFile.delete();
+       // if(dbFile.exists())
+         //   dbFile.delete();
         //Log.v("dbFile", dbFile + "   "+ dbFile.exists());
         return dbFile.exists();
     }

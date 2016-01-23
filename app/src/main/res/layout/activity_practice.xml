@@ -10,10 +10,10 @@
     tools:context="ayondas2k14.gnosis.PracticeActivity">
 
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/categoryListView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/categoryListView"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true" />
 </RelativeLayout>

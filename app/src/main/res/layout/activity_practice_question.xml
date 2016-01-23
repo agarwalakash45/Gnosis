@@ -79,22 +79,23 @@
         android:layout_height="35dp"
         android:id="@+id/backButton"
         android:background="@drawable/left_arrow"
-        android:layout_alignBottom="@+id/homeButton"
-        android:layout_toLeftOf="@+id/homeButton"
-        android:layout_toStartOf="@+id/homeButton"
-        android:layout_marginRight="40dp"
-        android:onClick="onBackButtonClicked" />
+        android:layout_marginRight="45dp"
+        android:onClick="onBackButtonClicked"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignRight="@+id/quizTypeTextView"
+        android:layout_alignEnd="@+id/quizTypeTextView"
+        android:layout_marginEnd="45dp"
+        android:layout_marginTop="10dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/homeButton"
-        android:layout_below="@+id/linearLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:background="@drawable/home"
-        android:onClick="onHomeButtonClicked" />
+        android:onClick="onHomeButtonClicked"
+        android:layout_alignBottom="@+id/backButton"
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -102,17 +103,18 @@
         android:layout_height="35dp"
         android:id="@+id/nextButton"
         android:background="@drawable/right_arrow"
-        android:layout_alignBottom="@+id/homeButton"
-        android:layout_toRightOf="@+id/homeButton"
-        android:layout_toEndOf="@+id/homeButton"
-        android:layout_marginLeft="40dp"
-        android:onClick="onNextButtonClicked" />
+        android:onClick="onNextButtonClicked"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:layout_marginRight="51dp"
+        android:layout_marginEnd="51dp"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
         android:id="@+id/qnoTv"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/quizTypeTextView"

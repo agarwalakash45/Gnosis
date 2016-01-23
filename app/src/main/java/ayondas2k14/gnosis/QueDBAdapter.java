@@ -128,4 +128,35 @@ public class QueDBAdapter {
 
         db.execSQL(query);
     }
+
+    //Method which returns cursor to query returning questions for a level
+    public Cursor QueFromLevel(){
+        String query="SELECT * FROM " + QuesDBHandler.TABLE_QUES + " WHERE " +
+                QuesDBHandler.COLUMN_LEVEL + "=1;";
+
+        Cursor c=db.rawQuery(query,null);
+
+        c.moveToFirst();
+
+        return c;
+    }
+
+    public void updatechallengeQues(String category,int queno,int response){
+        String query="UPDATE " + QuesDBHandler.TABLE_QUES + " SET " +
+                QuesDBHandler.COLUMN_MARKCHL + "=" + response + " WHERE " +
+                QuesDBHandler.COLUMN_CATEGORY + "=\"" + category + "\" AND " +
+                QuesDBHandler.COLUMN_QNO + "=" + queno + ";";
+
+        db.execSQL(query);
+    }
+
+    public void refreshLevel(int level)
+    {
+        String query="UPDATE "+ QuesDBHandler.TABLE_QUES + " SET " + QuesDBHandler.COLUMN_MARKCHL
+                + "=-1"+ " WHERE "+ QuesDBHandler.COLUMN_LEVEL +  "=" +level+";";
+
+        db.execSQL(query);
+    }
+
+
 }

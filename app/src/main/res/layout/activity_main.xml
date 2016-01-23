@@ -53,7 +53,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false">
 
                 <ImageView
                     android:layout_width="150dp"
@@ -83,11 +84,15 @@
         android:layout_height="130dp"
         card_view:cardCornerRadius="4dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="30dp"
+        android:clickable="true"
+        android:onClick="onChallengeModeClicked"
+        android:nestedScrollingEnabled="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:clickable="false">
 
             <ImageView
                 android:layout_width="150dp"
